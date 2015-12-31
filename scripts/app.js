@@ -288,16 +288,8 @@ APP.Main = (function() {
   
   function colorizeAndScaleStories() {
 
-    var storyElements = document.querySelectorAll('.story');
-
-    // It does seem awfully broad to change all the
-    // colors every time!
-    
-    //for (var s = 0; s < storyElements.length; s++) {
-
-      //var story = storyElements[s];
-      var score = document.querySelector('.story__score');
-      var title = document.querySelector('.story__title');
+      var score = document.querySelectorAll('.story__score');
+      var title = document.querySelectorAll('.story__title');
 
       // Base the scale on the y position of the score.
       var height = main.offsetHeight;
@@ -316,7 +308,7 @@ APP.Main = (function() {
 
       score.style.backgroundColor = 'hsl(42, ' + saturation + '%, 50%)';
       title.style.opacity = opacity;
-   // }
+
   }
   
   
