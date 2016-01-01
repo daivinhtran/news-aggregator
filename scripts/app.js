@@ -74,8 +74,9 @@ APP.Main = (function() {
   }
 
   function onStoryClick(details) {
-
-    var storyDetails = $('sd-' + details.id);
+    
+    var storyDetails = $('#sd-' + details.id);
+    
 
     // Wait a little time then show the story details.
     //setTimeout(showStory.bind(this, details.id), 60);
@@ -143,7 +144,6 @@ APP.Main = (function() {
         });
       }
     }
-
   }
 
   function showStory(id) {
@@ -156,10 +156,17 @@ APP.Main = (function() {
   }
 
   function hideStory(id) {
+    
     var storyDetails = $('#sd-' + id);
     storyDetails.classList.remove('visible');
     storyDetails.classList.add('hidden');
+    
+    //removeStoryDetails(storyDetails);
   }
+  
+//  function removeStoryDetails(storyDetails){
+//    storyDetails.parentNode.removeChild(storyDetails);
+//  }
 
   main.addEventListener('touchstart', function(evt) {
 
