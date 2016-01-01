@@ -67,26 +67,29 @@ APP.Main = (function() {
     // directly rather than looping through all of them.
     var storyElements = document.querySelectorAll('.story');
 
-    for (var i = 0; i < storyElements.length; i++) {
+//    for (var i = 0; i < storyElements.length; i++) {
+//
+//      if (storyElements[i].getAttribute('id') === 's-' + key) {
+//
+//        details.time *= 1000;
+//        var story = storyElements[i];
+//        var html = storyTemplate(details);
+//        story.innerHTML = html;
+//        story.addEventListener('click', onStoryClick.bind(this, details));
+//        story.classList.add('clickable');
+//
+//        // Tick down. When zero we can batch in the next load.
+//        
+//      }
+//    }
+    details.time *= 1000;
+    var story = document.querySelector('.story#s-' + key);
+    var html = storyTemplate(details);
+    story.innerHTML = html;
+    story.addEventListener('click', onStoryClick.bind(this, details));
+    story.classList.add('clickable');
+    storyLoadCount--;
 
-      if (storyElements[i].getAttribute('id') === 's-' + key) {
-
-        details.time *= 1000;
-        var story = storyElements[i];
-        var html = storyTemplate(details);
-        story.innerHTML = html;
-        story.addEventListener('click', onStoryClick.bind(this, details));
-        story.classList.add('clickable');
-
-        // Tick down. When zero we can batch in the next load.
-        storyLoadCount--;
-
-      }
-    }
-
-    // Colorize on complete.
-    if (storyLoadCount === 0)
-      colorizeAndScaleStories();
   }
 
   function onStoryClick(details) {
@@ -94,7 +97,8 @@ APP.Main = (function() {
     var storyDetails = $('sd-' + details.id);
 
     // Wait a little time then show the story details.
-    setTimeout(showStory.bind(this, details.id), 60);
+    //setTimeout(showStory.bind(this, details.id), 60);
+    requestAnimationFrame(showStory.bind(this,details.id));
 
     // Create and append the story. A visual change...
     // perhaps that should be in a requestAnimationFrame?
@@ -162,90 +166,102 @@ APP.Main = (function() {
   }
 
   function showStory(id) {
+//
+//    if (inDetails)
+//      return;
 
-    if (inDetails)
-      return;
-
-    inDetails = true;
+//    inDetails = true;
 
     var storyDetails = $('#sd-' + id);
-    var left = null;
-
-    if (!storyDetails)
-      return;
-
-    document.body.classList.add('details-active');
-    storyDetails.style.opacity = 1;
-
-    function animate () {
-
-      // Find out where it currently is.
-      var storyDetailsPosition = storyDetails.getBoundingClientRect();
-
-      // Set the left value if we don't have one already.
-      if (left === null)
-        left = storyDetailsPosition.left;
-
-      // Now figure out where it needs to go.
-      left += (0 - storyDetailsPosition.left) * 0.1;
-
-      // Set up the next bit of the animation if there is more to do.
-      if (Math.abs(left) > 0.5)
-        setTimeout(animate, 4);
-      else
-        left = 0;
-
-      // And update the styles. Wait, is this a read-write cycle?
-      // I hope I don't trigger a forced synchronous layout!
-      storyDetails.style.left = left + 'px';
-    }
+//    var left = null;
+//
+//    if (!storyDetails)
+//      return;
+//
+//    document.body.classList.add('details-active');
+    //storyDetails.style.opacity = 1;
+    storyDetails.classList.remove('hidden');
+    storyDetails.classList.add('visible');
+//    function animate () {
+//
+//      // Find out where it currently is.
+//      var storyDetailsPosition = storyDetails.getBoundingClientRect();
+//
+//      // Set the left value if we don't have one already.
+//      if (left === null)
+//        left = storyDetailsPosition.left;
+//
+//      // Now figure out where it needs to go.
+//      left += (0 - storyDetailsPosition.left) * 0.1;
+//
+//      // Set up the next bit of the animation if there is more to do.
+//      if (Math.abs(left) > 0.5)
+//        setTimeout(animate, 4);
+//      else
+//        left = 0;
+//
+//      // And update the styles. Wait, is this a read-write cycle?
+//      // I hope I don't trigger a forced synchronous layout!
+//      storyDetails.style.left = left + 'px';
+//    }
 
     // We want slick, right, so let's do a setTimeout
     // every few milliseconds. That's going to keep
     // it all tight. Or maybe we're doing visual changes
     // and they should be in a requestAnimationFrame
-    setTimeout(animate, 4);
+    //requestAnimationFrame(animate);
   }
 
   function hideStory(id) {
-
-    if (!inDetails)
-      return;
-
     var storyDetails = $('#sd-' + id);
-    var left = 0;
+//    var left = null;
+//
+//    if (!storyDetails)
+//      return;
+//
+//    document.body.classList.add('details-active');
+    //storyDetails.style.opacity = 1;
+    storyDetails.classList.remove('visible');
+    storyDetails.classList.add('hidden');
 
-    document.body.classList.remove('details-active');
-    storyDetails.style.opacity = 0;
-
-    function animate () {
-
-      // Find out where it currently is.
-      var mainPosition = main.getBoundingClientRect();
-      var storyDetailsPosition = storyDetails.getBoundingClientRect();
-      var target = mainPosition.width + 100;
-
-      // Now figure out where it needs to go.
-      left += (target - storyDetailsPosition.left) * 0.1;
-
-      // Set up the next bit of the animation if there is more to do.
-      if (Math.abs(left - target) > 0.5) {
-        setTimeout(animate, 4);
-      } else {
-        left = target;
-        inDetails = false;
-      }
-
-      // And update the styles. Wait, is this a read-write cycle?
-      // I hope I don't trigger a forced synchronous layout!
-      storyDetails.style.left = left + 'px';
-    }
-
-    // We want slick, right, so let's do a setTimeout
-    // every few milliseconds. That's going to keep
-    // it all tight. Or maybe we're doing visual changes
-    // and they should be in a requestAnimationFrame
-    setTimeout(animate, 4);
+//    if (!inDetails)
+//      return;
+//
+//    var storyDetails = $('#sd-' + id);
+//    var left = 0;
+//
+//    document.body.classList.remove('details-active');
+//    storyDetails.style.opacity = 0;
+//
+//    function animate () {
+//
+//      // Find out where it currently is.
+//      var mainPosition = main.getBoundingClientRect();
+//      var storyDetailsPosition = storyDetails.getBoundingClientRect();
+//      var target = mainPosition.width + 100;
+//
+//      // Now figure out where it needs to go.
+//      left += (target - storyDetailsPosition.left) * 0.1;
+//
+//      // Set up the next bit of the animation if there is more to do.
+//      if (Math.abs(left - target) > 0.5) {
+//        setTimeout(animate, 4);
+//      } else {
+//        left = target;
+//        inDetails = false;
+//      }
+//
+//      // And update the styles. Wait, is this a read-write cycle?
+//      // I hope I don't trigger a forced synchronous layout!
+//      storyDetails.style.left = left + 'px';
+//      
+//    }
+//
+//    // We want slick, right, so let's do a setTimeout
+//    // every few milliseconds. That's going to keep
+//    // it all tight. Or maybe we're doing visual changes
+//    // and they should be in a requestAnimationFrame
+//    requestAnimationFrame(animate);
   }
 
   /**
@@ -258,60 +274,31 @@ APP.Main = (function() {
 //
 //    // It does seem awfully broad to change all the
 //    // colors every time!
-//    
+//    var height = main.offsetHeight;
+//    var mainPosition = main.getBoundingClientRect();
 //    for (var s = 0; s < storyElements.length; s++) {
-//
 //      var story = storyElements[s];
 //      var score = story.querySelector('.story__score');
 //      var title = story.querySelector('.story__title');
 //
 //      // Base the scale on the y position of the score.
-//      var height = main.offsetHeight;
-//      var mainPosition = main.getBoundingClientRect();
-//      var scoreLocation = score.getBoundingClientRect().top -
-//          document.body.getBoundingClientRect().top;
+//      var scoreLocation = score.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
 //      var scale = Math.min(1, 1 - (0.05 * ((scoreLocation - 170) / height)));
-//      var opacity = Math.min(1, 1 - (0.5 * ((scoreLocation - 170) / height)));
+//      //var opacity = Math.min(1, 1 - (0.5 * ((scoreLocation - 170) / height)));
 //
-//      score.style.width = (scale * 40) + 'px';
-//      score.style.height = (scale * 40) + 'px';
-//      score.style.lineHeight = (scale * 40) + 'px';
+////      score.style.width = (scale * 40) + 'px';
+////      score.style.height = (scale * 40) + 'px';
+////      score.style.lineHeight = (scale * 40) + 'px';
 //
 //      // Now figure out how wide it is and use that to saturate it.
-//      scoreLocation = score.getBoundingClientRect();
-//      var saturation = (100 * ((scoreLocation.width - 38) / 2));
-//
-//      score.style.backgroundColor = 'hsl(42, ' + saturation + '%, 50%)';
-//      title.style.opacity = opacity;
+////      scoreLocation = score.getBoundingClientRect();
+////      var saturation = (100 * ((scoreLocation.width - 38) / 2));
+////
+////      score.style.backgroundColor = 'hsl(42, ' + saturation + '%, 50%)';
+//      //title.style.opacity = opacity;
 //    }
 //  }
-  
-  function colorizeAndScaleStories() {
-
-      var score = document.querySelectorAll('.story__score');
-      var title = document.querySelectorAll('.story__title');
-
-      // Base the scale on the y position of the score.
-      var height = main.offsetHeight;
-      var mainPosition = main.getBoundingClientRect();
-      var scoreLocation = score.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
-      var scale = Math.min(1, 1 - (0.05 * ((scoreLocation - 170) / height)));
-      var opacity = Math.min(1, 1 - (0.5 * ((scoreLocation - 170) / height)));
-
-      score.style.width = (scale * 40) + 'px';
-      score.style.height = (scale * 40) + 'px';
-      score.style.lineHeight = (scale * 40) + 'px';
-
-      // Now figure out how wide it is and use that to saturate it.
-      scoreLocation = score.getBoundingClientRect();
-      var saturation = (100 * ((scoreLocation.width - 38) / 2));
-
-      score.style.backgroundColor = 'hsl(42, ' + saturation + '%, 50%)';
-      title.style.opacity = opacity;
-
-  }
-  
-  
+//  
 
   main.addEventListener('touchstart', function(evt) {
 
@@ -330,7 +317,7 @@ APP.Main = (function() {
     var scrollTopCapped = Math.min(70, main.scrollTop);
     var scaleString = 'scale(' + (1 - (scrollTopCapped / 300)) + ')';
 
-    colorizeAndScaleStories();
+   // colorizeAndScaleStories();
 
     header.style.height = (156 - scrollTopCapped) + 'px';
     headerTitles.style.webkitTransform = scaleString;
